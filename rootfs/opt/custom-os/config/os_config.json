@@ -1,0 +1,45 @@
+{
+  "os_name": "AI Custom OS",
+  "os_version": "1.0",
+  "desktop": {
+    "panel_position": "bottom",
+    "panel_height": 48,
+    "icon_size": 56,
+    "wallpaper_path": "{ROOT}/wallpapers/lagoon.png",
+    "mode": "dark",
+    "accent": "#2fb7b0",
+    "font": "Inter 10",
+    "mono_font": "JetBrains Mono 11"
+  },
+  "wm": {
+    "titlebar_height": 32,
+    "border_width": 4,
+    "title_font": "Inter Bold 10"
+  },
+  "display": { "output": "", "mode": "" },
+  "apps": [
+    { "name": "Folder",   "icon": "📁", "exec": "python3 {ROOT}/apps/file_manager.py", "desc": "Browse files and drives" },
+    { "name": "Terminal", "icon": "⌨️", "exec": "python3 {ROOT}/apps/terminal.py",     "desc": "Command line" },
+    { "name": "Notes",    "icon": "📝", "exec": "python3 {ROOT}/apps/editor.py",       "desc": "Text and code editor" },
+    { "name": "Settings", "icon": "⚙️", "exec": "python3 {ROOT}/apps/settings.py",     "desc": "Appearance, network, sound" }
+  ],
+  "pinned_apps": ["Folder", "Terminal", "Notes", "Settings"],
+  "desktop_shortcuts": ["Folder", "Terminal", "Notes", "Settings"],
+  "shortcuts": {
+    "Super+space": "@launcher",
+    "Super+Return": "python3 {ROOT}/apps/terminal.py",
+    "Ctrl+Alt+t": "python3 {ROOT}/apps/terminal.py",
+    "Super+e": "python3 {ROOT}/apps/file_manager.py",
+    "Super+i": "python3 {ROOT}/apps/settings.py",
+    "Super+d": "@show-desktop",
+    "Super+Up": "@maximize",
+    "Super+Down": "@minimize",
+    "Alt+F4": "@close"
+  },
+  "startup_commands": [
+    "pipewire",
+    "pipewire-pulse",
+    "wireplumber",
+    "nm-applet"
+  ]
+}

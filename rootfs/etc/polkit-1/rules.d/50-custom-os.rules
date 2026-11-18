@@ -1,0 +1,9 @@
+// Members of "sudo" (the live user) may manage networks, mount drives and power the machine.
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("sudo") &&
+        (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 ||
+         action.id.indexOf("org.freedesktop.udisks2.") == 0 ||
+         action.id.indexOf("org.freedesktop.login1.") == 0)) {
+        return polkit.Result.YES;
+    }
+});

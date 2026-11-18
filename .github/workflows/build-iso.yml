@@ -1,0 +1,52 @@
+name: Build ISO
+
+on:
+  push:
+    branches: [main, master]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax checks (py_compile, bash -n, JSON, YAML) and unit tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-yaml
+          ./tools/validate.sh
+
+  build-iso:
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL || true
+          df -h /
+
+      - name: Install host build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debootstrap squashfs-tools xorriso mtools dosfstools \
+            syslinux-common isolinux syslinux-utils grub-pc-bin grub-efi-amd64-bin grub-common \
+            debian-archive-keyring
+
+      - name: Build ai-custom-os.iso
+        run: sudo ./build.sh
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-custom-os-iso
+          path: |
+            ai-custom-os.iso
+            ai-custom-os.iso.sha256
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
